@@ -1,0 +1,33 @@
+<h1>Admin area</h1>
+
+<%= form_for @story do |f| %>
+    <% if @story.errors.any? %>
+        <div class="error_messages">
+            <h2>Form is invalid</h2>
+            <ul>
+            <% for message in @story.errors.full_messages %>
+                <li><%= message %></li>
+            <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+        <%= f.label :text %>
+        <%= f.text_area :text %>
+    </div>
+
+    <div class="field">
+        <%= f.label :user %>
+        <%= f.select :user_id, options_for_select(@users) %>
+    </div>
+    <div class="actions"><%= f.submit %></div>
+<% end %>
+
+<% @stories.each do |s| %>
+    <b>User: </b><%= s.user.email %>&nbsp;
+    <b>State: </b><%= s.state %>&nbsp;
+    <b>Text: </b><%= s.text %>&nbsp;
+    <%= link_to "Edit", edit_story_path(s) %><br />
+
+<% end %>

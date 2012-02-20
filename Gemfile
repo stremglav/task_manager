@@ -9,6 +9,10 @@ gem 'sqlite3'
 gem 'mysql2', '>= 0.3.0'
 gem "ruby-mysql"
 
+gem 'state_machine'
+
+gem 'enum_column3'
+
 gem 'json'
 
 # Gems used only for assets and not required

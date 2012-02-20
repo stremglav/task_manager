@@ -10,15 +10,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120219121643) do
+ActiveRecord::Schema.define(:version => 20120219163439) do
+
+  create_table "stories", :force => true do |t|
+    t.string   "state"
+    t.text     "text"
+    t.integer  "user_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "users", :force => true do |t|
     t.string   "full_name"
     t.string   "email"
     t.string   "password_digest"
-    t.boolean  "is_admin"
-    t.datetime "created_at",      :null => false
-    t.datetime "updated_at",      :null => false
+    t.enum     "role",            :limit => [:admin, :member, :viewer]
+    t.datetime "created_at",                                            :null => false
+    t.datetime "updated_at",                                            :null => false
   end
 
 end
