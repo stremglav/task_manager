@@ -8,22 +8,42 @@
 </head>
 <body class="<%= params[:controller] %>">
 
-    <div id="container">
-        <div id="user_nav">
-          <% if current_user %>
-            Logged in as 
-            <% if current_user.full_name  %>
-                <%= current_user.full_name %>
-            <% else %>
-                <%= current_user.email %>
-            <% end %>.
-            <%= link_to "Log out", logout_path %>
-          <% else %>
-            <%= link_to "Sign up", signup_path %> or
-            <%= link_to "log in", login_path %>
-          <% end %>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a data-target=".nav-collapse" data-toggle="collapse" class="btn btn-navbar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a href="#" class="brand">Simple Task Manager</a>
+          <div class="pull-right top-margin">
+                <% if current_user %>
+                    <span class="header-item">
+                        <% if current_user.is_admin?%>
+                            <%= link_to "Users", register_path %>
+                        <% end %>
+                    </span>
+                    <span class="header-item">
+                        Logged in as
+                        <%= link_to (current_user.full_name != "" ? current_user.full_name : current_user.email).to_s,
+                                    edit_user_path(current_user) %>
+                    </span>
+                    <span class="header-item">
+                        <%= link_to "Log out", logout_path %>
+                    </span>
+                <% else%>
+                    <span class="header-item">
+                        <%= link_to "Log in", login_path %>
+                    </span>
+                <% end %>
+          </div>
         </div>
+      </div>
+    </div>
 
+    <div class="container">
+        <br /><br /><br/ >
         <% flash.each do |name, msg| %>
           <%= content_tag :div, msg, :id => "flash_#{name}" %>
         <% end %>

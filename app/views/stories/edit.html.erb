@@ -1,35 +1,33 @@
-<h1>Edit Story</h1>
+<%= form_for @story, :html=>{:class => "form-horizontal"} do |f| %>
+    <fieldset>
+    <legend>Add new story</legend>
+    <%= render :template => "layouts/errors", :locals => {:object => @story} %>
 
-<%= form_for @story do |f| %>
-    <% if @story.errors.any? %>
-        <div class="error_messages">
-            <h2>Form is invalid</h2>
-            <ul>
-            <% for message in @story.errors.full_messages %>
-                <li><%= message %></li>
-            <% end %>
-            </ul>
+    <div class="control-group">
+        <%= f.label :user, :class => "control-label" %>
+        <div class="controls">
+            <%= f.select :user_id, options_for_select(@users) %>
         </div>
-    <% end %>
-
-    <div class="field">
-        <%= f.label :user %>
-        <%= f.select :user_id, options_for_select(@users) %>
     </div>
 
-    <div class="field">
-        <%= f.label :text %>
-        <%= f.text_area :text %>
+    <div class="control-group">
+        <%= f.label :text, :class => "control-label" %>
+        <div class="controls">
+            <%= f.text_area :text, :class => "input-xlarge", :rows => 3 %>
+        </div>
     </div>
 
-    <div class="field">
-        <%= f.label :state %>
+    <div class="control-group">
+        <%= f.label :state, :class => "control-label" %>
+        <div class="controls">
         <% if @story.state_events.length > 0 %>
-            <%= f.select :state, options_for_select(@story.state_events) %>
+                <%= f.select :state, options_for_select(@story.state_events.insert(0, @story.state )) %>
         <% else %>
             Accepted
         <% end %>
+        </div>
     </div>
 
-    <div class="actions"><%= f.submit %></div>
+    <div class="form-actions"><%= f.submit %></div>
+    </fieldset>
 <% end %>

@@ -1,9 +1,16 @@
 class User < ActiveRecord::Base
-    has_one :story
+    has_many :story
+    has_many :comment
 
     attr_accessible :email, :password, :password_confirmation, :role, :full_name
     has_secure_password
     validates_presence_of :password, :on => :create
+    validates_presence_of :role
+    validates :email, :presence => true, :email => true
+
+    def self.is_email_unique?(email)
+      !self.exists?(:email => email)
+    end
 
     def is_admin?
         self.role == :admin

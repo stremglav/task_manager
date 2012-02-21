@@ -1,0 +1,21 @@
+<%= form_for story, :html=>{:class => "form-horizontal"} do |f| %>
+    <fieldset>
+    <legend>Add new story</legend>
+    <%= render :template => "layouts/errors", :locals => {:object => story} %>
+
+    <div class="control-group">
+        <%= f.label :text, :class => "control-label" %>
+        <div class="controls">
+            <%= f.text_area :text, :class => "input-xlarge", :rows => 3 %>
+        </div>
+    </div>
+
+    <div class="control-group">
+        <%= f.label :user, :class => "control-label" %>
+        <div class="controls">
+            <%= f.select :user_id, options_for_select(users) %>
+        </div>
+    </div>
+    <div class="form-actions"><%= f.submit %></div>
+    </fieldset>
+<% end %>
