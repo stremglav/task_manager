@@ -33,8 +33,10 @@
         <td><%= s.text %></td>
         <td>
             <%= link_to 'Show', s %>
-            <%= link_to "Edit", edit_story_path(s) %>
-            <%= link_to "Delete", story_path(s), :confirm => "Are you sure?", :method=>:delete %>
+            <% if current_user.is_admin? || current_user.is_member? %>
+                <%= link_to "Edit", edit_story_path(s) %>
+                <%= link_to "Delete", story_path(s), :confirm => "Are you sure?", :method=>:delete %>
+            <% end %>
         </td>
     </tr>
     <% end %>

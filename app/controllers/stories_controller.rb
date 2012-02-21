@@ -4,6 +4,7 @@ class StoriesController < ApplicationController
 
         @story ||= Story.new
         @users = {}
+
         User.find(:all).collect {|u| @users[u.email] = u.id}
         
         if params[:filter]
@@ -19,16 +20,29 @@ class StoriesController < ApplicationController
 
     def create
         return if !is_member?
-
+        
+        is_user_exist = true
+        if params[:story] && params[:story][:user_id]
+            is_user_exist = User.find_by_id(params[:story][:user_id])
+        end
         @story = Story.new(params[:story])
-        @story = Story.new if @story.save
+        if is_user_exist
+            @story = Story.new if @story.save
+        else
+            @story.errors.add(:user_id, "User does not exist")
+        end
+        
         index
     end
 
     def show
         return if is_anonymous?
 
-        @story = Story.find(params[:id])
+        @story = Story.find_by_id(params[:id])
+        if !@story
+            redirect_to "/404.html"
+            return
+        end
         @comment = Comment.new
         @comments = Comment.where(:story_id => params[:id])
         render "show"
@@ -37,7 +51,11 @@ class StoriesController < ApplicationController
     def edit
         return if !is_member?
 
-        @story ||= Story.find(params[:id])
+        @story ||= Story.find_by_id(params[:id])
+        if !params[:id] || !@story
+            redirect_to "/404.html"
+            return
+        end
         @users = {}
         User.find(:all).collect {|u| @users[u.email] = u.id}
         render "edit"
@@ -46,7 +64,13 @@ class StoriesController < ApplicationController
     def update
         return if !is_member?
 
-        @story = Story.find(params[:id])
+        @story = Story.find_by_id(params[:id])
+
+        if !params[:id] || !@story
+            redirect_to "/404.html"
+            return
+        end
+
         if @story.update_attributes(params[:story])
             redirect_to root_url
         else
@@ -57,7 +81,13 @@ class StoriesController < ApplicationController
     def destroy
         return if !is_member?
 
-        @story = Story.find(params[:id])
+        @story = Story.find_by_id(params[:id])
+
+        if !params[:id] || !@story
+            redirect_to "/404.html"
+            return
+        end
+
         @story.destroy
         redirect_to root_url
     end
@@ -79,7 +109,6 @@ class StoriesController < ApplicationController
         elsif @current_user.is_member?
             return true
         else
-            PP.pp("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
             redirect_to "/404.html"
             return false
         end

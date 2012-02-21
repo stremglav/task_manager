@@ -1,8 +1,7 @@
 class Story < ActiveRecord::Base
     belongs_to :user
     
-    validates_presence_of :user_id, :on => :create
-    validates_presence_of :text
+    validates_presence_of :user_id, :text, :state
 
     def self.get_all_states
         return [:new, :started, :finished, :accepted, :rejected]
@@ -31,7 +30,7 @@ class Story < ActiveRecord::Base
             transition :from => :finished, :to => :rejected
         end
 
-        event :restarted do
+        event :started do
             transition :from => :rejected, :to => :started
         end
     end

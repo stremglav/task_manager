@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
     has_secure_password
     validates_presence_of :password, :on => :create
     validates_presence_of :role
-    validates :email, :presence => true, :email => true
+    validates :email, :presence => true
+    validates_uniqueness_of :email
 
     def self.is_email_unique?(email)
       !self.exists?(:email => email)

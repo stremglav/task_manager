@@ -3,6 +3,7 @@ class CommentsController < ApplicationController
         return if is_anonymous?
 
         if params[:comment][:text] != ""
+            params[:comment][:user_id] = @current_user.id
             @comment = Comment.new(params[:comment])
             @comment.save
         end

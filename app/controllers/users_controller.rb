@@ -11,10 +11,8 @@ class UsersController < ApplicationController
         return if !is_admin_or_oneself?
 
         @user = User.new(params[:user])
-        email_uniq = User.is_email_unique?(params[:user][:email])
-        @user.errors.add(:email, "Email is not unique")
 
-        if email_uniq && @user.save
+        if @user.save
             redirect_to register_url
         else
             index
@@ -41,7 +39,7 @@ class UsersController < ApplicationController
     end
 
     def destroy
-        return if !is_admin_or_oneself?(params[:id])
+        return if !is_admin_or_oneself?
 
         @user = User.find(params[:id])
         @user.destroy
