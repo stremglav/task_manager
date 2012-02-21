@@ -32,9 +32,9 @@ ActiveRecord::Schema.define(:version => 20120220194557) do
     t.string   "full_name"
     t.string   "email"
     t.string   "password_digest"
-    t.enum     "role",            :limit => [:admin, :member, :viewer]
-    t.datetime "created_at",                                            :null => false
-    t.datetime "updated_at",                                            :null => false
+    t.string   "role"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
 end

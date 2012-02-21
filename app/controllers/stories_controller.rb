@@ -11,9 +11,9 @@ class StoriesController < ApplicationController
             params[:filter].delete(:user_id) if params[:filter][:user_id] == ""
             params[:filter].delete(:state) if params[:filter][:state] == ""
 
-            @stories = Story.where(params[:filter], :include => :user)
+            @stories = Story.where(params[:filter])
         else
-            @stories = Story.find(:all, :include => :user)
+            @stories = Story.find(:all)
         end
         render :action => "index"
     end

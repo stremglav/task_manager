@@ -13,16 +13,20 @@ class User < ActiveRecord::Base
       !self.exists?(:email => email)
     end
 
+    def self.roles
+        return ["admin", "member", "viewer"]
+    end
+
     def is_admin?
-        self.role == :admin
+        self.role == "admin"
     end
 
     def is_member?
-        self.role == :member
+        self.role == "member"
     end
 
     def is_viewer?
-        self.role == :viewer
+        self.role == "viewer"
     end
 
 end

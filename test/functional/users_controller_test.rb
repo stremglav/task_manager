@@ -157,7 +157,7 @@ class UsersControllerTest < ActionController::TestCase
         assert_response :success
         assert_template "edit"
         user = assigns(:user)
-        assert user.role == :viewer
+        assert user.role == "viewer"
         assert flash[:notice] == "This user has been modified"
 
         get :update, {:id => id, :user => {:email => "test@test.ru", :password_confirmation => 1}}
@@ -181,7 +181,7 @@ class UsersControllerTest < ActionController::TestCase
         assert_response :success
         assert_template "edit"
         user = assigns(:user)
-        assert user.role == :member
+        assert user.role == "member"
         assert flash[:notice] == "This user has been modified"
 
         get :update, {:id => id, :user => {:email => "test@test.ru", :password_confirmation => 1}}

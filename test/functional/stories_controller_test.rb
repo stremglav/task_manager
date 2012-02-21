@@ -1,26 +1,28 @@
 require 'test_helper'
 
 class StoriesControllerTest < ActionController::TestCase
+    def setup
+        Story.new({:text => "test1", :user_id => users(:admin).id, :state => :new}).save
+        Story.new({:text => "test2", :user_id => users(:member).id, :state => :new}).save
+        Story.new({:text => "test3", :user_id => users(:viewer).id, :state => :new}).save
+    end
 
     def login_admin
-        admin = User.find_by_email("admin@admin.ru")
-        session["user_id"] = admin.id
+        session["user_id"] = users(:admin).id
     end
 
     def login_member
-        member = User.find_by_email("member@member.ru")
-        session["user_id"] = member.id
+        session["user_id"] = users(:member).id
     end
 
     def login_viewer
-        viewer = User.find_by_email("viewer@viewer.ru")
-        session["user_id"] = viewer.id
+        session["user_id"] = users(:viewer).id
     end
 
     def test_filter(set_user_func)
         set_user_func.call()
 
-        id =  User.find_by_email("admin@admin.ru").id
+        id =  users(:admin).id
         state = :started
 
         filter = {"user_id" => id}
@@ -59,12 +61,11 @@ class StoriesControllerTest < ActionController::TestCase
     def test_create_story(set_user_func)
         set_user_func.call()
     
-        id = User.find_by_email("admin@admin.ru").id
+        id = users(:admin).id
         story = {
             :text => "test text",
             :user_id => id
         }
-
         get :create, :story => story
         story_object = assigns(:story)
         assert story_object.errors.blank?
@@ -89,7 +90,7 @@ class StoriesControllerTest < ActionController::TestCase
     def test_show(set_user_func)
         set_user_func.call()
 
-        get :show, {:id => 1}
+        get :show, {:id => Story.find(:first).id}
         assert_response :success
         assert_template "show"
 
@@ -103,7 +104,7 @@ class StoriesControllerTest < ActionController::TestCase
     def test_edit(set_user_func)
         set_user_func.call()
 
-        get :edit, {:id => 1}
+        get :edit, {:id => Story.find(:first).id}
         assert_response :success
         assert_template "edit"
 
@@ -114,14 +115,14 @@ class StoriesControllerTest < ActionController::TestCase
     def test_update(set_user_func)
         set_user_func.call()
 
-        id = User.find_by_email("member@member.ru").id
-        get :update, {:id => 1, :story => {:text => "aaa", :user_id => id}}
+        id = users(:member).id
+        get :update, {:id => Story.find(:first).id, :story => {:text => "aaa", :user_id => id}}
         assert_redirected_to root_url
 
         get :update, {:id => 0}
         assert_redirected_to "/404.html"
 
-        get :update, {:id => 1, :story => {:text => "", :user_id => 0}}
+        get :update, {:id => Story.find(:first).id, :story => {:text => "", :user_id => 0}}
         assert_response :success
         assert_template "edit"
     end
@@ -129,7 +130,7 @@ class StoriesControllerTest < ActionController::TestCase
     def test_destroy(set_user_func)
         set_user_func.call()
 
-        get :destroy, {:id => 1}
+        get :destroy, {:id => Story.find(:first).id}
         assert_redirected_to root_url
 
         get :destroy, {:id => 0}

@@ -8,7 +8,7 @@
                  options_for_select(@users, (params[:filter] ? params[:filter][:user_id] : nil)),
                  {:include_blank => 'Select Person'} %>
     <%= f.select :state,
-                 options_for_select(Story.get_all_states, (params[:filter] ? params[:filter][:state] : nil)),
+                 options_for_select(Story.state_machine.states.map{|x| x.human_name}, (params[:filter] ? params[:filter][:state] : nil)),
                  {:include_blank => 'Select State'} %>
     <button type="submit" class="btn">Filter</button>
 </center>

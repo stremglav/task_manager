@@ -4,7 +4,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :full_name
       t.string :email
       t.string :password_digest
-      t.column :role, :enum, :limit => [:admin, :member, :viewer], :defailt => :member
+      t.string :role, :defailt => :member
 
       t.timestamps
     end

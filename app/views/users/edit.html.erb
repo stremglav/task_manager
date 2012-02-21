@@ -14,7 +14,7 @@
     <div class="control-group">
         <%= f.label :role, :class => "control-label" %>
         <div class="controls">
-            <%= f.enum_select :role, {:include_blank => 'Select Role'} %>
+            <%= f.select :role, options_for_select(User.roles), {:include_blank => 'Select Role'} %>
         </div>
     </div>
     <% end %>

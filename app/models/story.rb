@@ -3,10 +3,6 @@ class Story < ActiveRecord::Base
     
     validates_presence_of :user_id, :text, :state
 
-    def self.get_all_states
-        return [:new, :started, :finished, :accepted, :rejected]
-    end
-
     state_machine :initial => :new do
         state :new
         state :started

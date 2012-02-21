@@ -4,20 +4,4 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-new:
-    id: 1
-    text: Text new
-    user_id: 1 
-    state: new
 
-started:
-    id: 2
-    text: Text started
-    user_id: 1
-    state: started
-
-finished:
-    id: 3
-    text: Text started
-    user_id: 2
-    state: finished
